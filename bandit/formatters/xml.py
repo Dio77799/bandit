@@ -12,8 +12,9 @@ This formatter outputs the issues as XML.
 .. code-block:: xml
 
     <?xml version='1.0' encoding='utf-8'?>
-    <testsuite name="bandit" tests="1"><testcase
-    classname="examples/yaml_load.py" name="blacklist_calls"><error
+    <testsuite name="bandit" tests="1" errors="1" failures="0"
+    skipped="0"><testcase classname="examples/yaml_load.py"
+    name="blacklist_calls" file="examples/yaml_load.py" line="5"><error
     message="Use of unsafe yaml load. Allows instantiation of arbitrary
     objects. Consider yaml.safe_load().&#10;" type="MEDIUM"
     more_info="https://bandit.readthedocs.io/en/latest/">Test ID: B301
@@ -31,6 +32,10 @@ This formatter outputs the issues as XML.
 
 .. versionchanged:: 1.7.3
     New field `CWE` added to output
+
+.. versionchanged:: 1.9.5
+    New attributes `errors`, `failures` and `skipped` added to `testsuite`,
+    and `file` and `line` added to `testcase`
 
 """
 import logging
@@ -53,12 +58,24 @@ def report(manager, fileobj, sev_level, conf_level, lines=-1):
     """
 
     issues = manager.get_issue_list(sev_level=sev_level, conf_level=conf_level)
-    root = ET.Element("testsuite", name="bandit", tests=str(len(issues)))
+    root = ET.Element(
+        "testsuite",
+        name="bandit",
+        tests=str(len(issues)),
+        errors=str(len(issues)),
+        failures="0",
+        skipped="0",
+    )
 
     for issue in issues:
         test = issue.test
         testcase = ET.SubElement(
-            root, "testcase", classname=issue.fname, name=test
+            root,
+            "testcase",
+            classname=issue.fname,
+            name=test,
+            file=issue.fname,
+            line=str(issue.lineno),
         )
 
         text = (

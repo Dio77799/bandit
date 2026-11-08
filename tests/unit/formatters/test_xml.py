@@ -85,3 +85,27 @@ class XmlFormatterTests(testtools.TestCase):
             self.assertIsNotNone(
                 data["testsuite"]["testcase"]["error"]["@more_info"]
             )
+            self.assertEqual("1", data["testsuite"]["@errors"])
+            self.assertEqual("0", data["testsuite"]["@failures"])
+            self.assertEqual("0", data["testsuite"]["@skipped"])
+            self.assertEqual(
+                self.tmp_fname, data["testsuite"]["testcase"]["@file"]
+            )
+            self.assertEqual("4", data["testsuite"]["testcase"]["@line"])
+
+    def test_report_no_issues(self):
+        self.manager.results = []
+        with open(self.tmp_fname, "wb") as tmp_file:
+            b_xml.report(
+                self.manager,
+                tmp_file,
+                self.issue.severity,
+                self.issue.confidence,
+            )
+
+        with open(self.tmp_fname) as f:
+            data = self._xml_to_dict(ET.XML(f.read()))
+            self.assertEqual("0", data["testsuite"]["@tests"])
+            self.assertEqual("0", data["testsuite"]["@errors"])
+            self.assertEqual("0", data["testsuite"]["@failures"])
+            self.assertEqual("0", data["testsuite"]["@skipped"])
