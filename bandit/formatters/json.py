@@ -13,53 +13,80 @@ This formatter outputs the issues in JSON.
 
     {
       "errors": [],
-      "generated_at": "2015-12-16T22:27:34Z",
+      "generated_at": "2026-11-08T19:12:27Z",
       "metrics": {
         "_totals": {
-          "CONFIDENCE.HIGH": 1,
+          "CONFIDENCE.HIGH": 2,
           "CONFIDENCE.LOW": 0,
           "CONFIDENCE.MEDIUM": 0,
           "CONFIDENCE.UNDEFINED": 0,
           "SEVERITY.HIGH": 0,
           "SEVERITY.LOW": 0,
-          "SEVERITY.MEDIUM": 1,
+          "SEVERITY.MEDIUM": 2,
           "SEVERITY.UNDEFINED": 0,
-          "loc": 5,
-          "nosec": 0
+          "loc": 19,
+          "nosec": 0,
+          "skipped_tests": 0
         },
         "examples/yaml_load.py": {
-          "CONFIDENCE.HIGH": 1,
+          "CONFIDENCE.HIGH": 2,
           "CONFIDENCE.LOW": 0,
           "CONFIDENCE.MEDIUM": 0,
           "CONFIDENCE.UNDEFINED": 0,
           "SEVERITY.HIGH": 0,
           "SEVERITY.LOW": 0,
-          "SEVERITY.MEDIUM": 1,
+          "SEVERITY.MEDIUM": 2,
           "SEVERITY.UNDEFINED": 0,
-          "loc": 5,
-          "nosec": 0
+          "loc": 19,
+          "nosec": 0,
+          "skipped_tests": 0
         }
       },
       "results": [
         {
-          "code": "4     ystr = yaml.dump({'a' : 1, 'b' : 2, 'c' : 3})\n5
-                         y = yaml.load(ystr)\n6     yaml.dump(y)\n",
+          "code": "8     ystr = yaml.dump({'a': 1, 'b': 2, 'c': 3})\n9
+                   y = yaml.load(ystr)\n10     yaml.dump(y)\n",
+          "col_offset": 8,
+          "end_col_offset": 23,
           "filename": "examples/yaml_load.py",
           "issue_confidence": "HIGH",
-          "issue_severity": "MEDIUM",
           "issue_cwe": {
             "id": 20,
             "link": "https://cwe.mitre.org/data/definitions/20.html"
           },
+          "issue_severity": "MEDIUM",
           "issue_text": "Use of unsafe yaml load. Allows instantiation of
-                         arbitrary objects. Consider yaml.safe_load().\n",
-          "line_number": 5,
+                         arbitrary objects. Consider yaml.safe_load().",
+          "line_number": 9,
           "line_range": [
-            5
+            9
           ],
-          "more_info": "https://bandit.readthedocs.io/en/latest/",
-          "test_name": "blacklist_calls",
-          "test_id": "B301"
+          "more_info": "https://bandit.readthedocs.io/en/latest/plugins/
+                        b506_yaml_load.html",
+          "test_id": "B506",
+          "test_name": "yaml_load"
+        },
+        {
+          "code": "21 \n22 yaml.load(\"{}\", Loader=yaml.Loader)\n23 \n",
+          "col_offset": 0,
+          "end_col_offset": 35,
+          "filename": "examples/yaml_load.py",
+          "issue_confidence": "HIGH",
+          "issue_cwe": {
+            "id": 20,
+            "link": "https://cwe.mitre.org/data/definitions/20.html"
+          },
+          "issue_severity": "MEDIUM",
+          "issue_text": "Use of unsafe yaml load. Allows instantiation of
+                         arbitrary objects. Consider yaml.safe_load().",
+          "line_number": 22,
+          "line_range": [
+            22
+          ],
+          "more_info": "https://bandit.readthedocs.io/en/latest/plugins/
+                        b506_yaml_load.html",
+          "test_id": "B506",
+          "test_name": "yaml_load"
         }
       ]
     }
